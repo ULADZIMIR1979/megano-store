@@ -1,0 +1,554 @@
+[
+{
+    "model": "shop.category",
+    "pk": 1,
+    "fields": {
+        "title": "Смартфоны",
+        "parent": null,
+        "image": null
+    }
+},
+{
+    "model": "shop.category",
+    "pk": 2,
+    "fields": {
+        "title": "Ноутбуки",
+        "parent": null,
+        "image": null
+    }
+},
+{
+    "model": "shop.category",
+    "pk": 3,
+    "fields": {
+        "title": "Планшеты",
+        "parent": null,
+        "image": null
+    }
+},
+{
+    "model": "shop.category",
+    "pk": 4,
+    "fields": {
+        "title": "Наушники",
+        "parent": null,
+        "image": null
+    }
+},
+{
+    "model": "shop.category",
+    "pk": 5,
+    "fields": {
+        "title": "Часы",
+        "parent": null,
+        "image": null
+    }
+},
+{
+    "model": "shop.tag",
+    "pk": 1,
+    "fields": {
+        "name": "Gaming"
+    }
+},
+{
+    "model": "shop.tag",
+    "pk": 2,
+    "fields": {
+        "name": "Premium"
+    }
+},
+{
+    "model": "shop.tag",
+    "pk": 3,
+    "fields": {
+        "name": "Budget"
+    }
+},
+{
+    "model": "shop.tag",
+    "pk": 4,
+    "fields": {
+        "name": "Wireless"
+    }
+},
+{
+    "model": "shop.tag",
+    "pk": 5,
+    "fields": {
+        "name": "New"
+    }
+},
+{
+    "model": "shop.tag",
+    "pk": 6,
+    "fields": {
+        "name": "Sale"
+    }
+},
+{
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$xyz123$...",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "user1",
+        "first_name": "Иван",
+        "last_name": "Иванов",
+        "email": "ivan@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2023-01-01T00:00:00Z",
+        "fullName": "Иван Иванов",
+        "phone": "+79161234567",
+        "avatar": null
+    }
+},
+{
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$abc456$...",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "user2",
+        "first_name": "Мария",
+        "last_name": "Петрова",
+        "email": "maria@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2023-02-01T00:00:00Z",
+        "fullName": "Мария Петрова",
+        "phone": "+79167654321",
+        "avatar": null
+    }
+},
+{
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$def789$...",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "user3",
+        "first_name": "Алексей",
+        "last_name": "Сидоров",
+        "email": "alex@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2023-03-01T00:00:00Z",
+        "fullName": "Алексей Сидоров",
+        "phone": "+79169874563",
+        "avatar": null
+    }
+},
+{
+    "model": "shop.product",
+    "pk": 1,
+    "fields": {
+        "category": 1,
+        "title": "iPhone 15 Pro",
+        "description": "Смартфон Apple нового поколения",
+        "fullDescription": "Новейший iPhone с титановым корпусом и улучшенной камерой",
+        "price": "999.99",
+        "count": 10,
+        "limited": false,
+        "freeDelivery": true,
+        "is_active": true,
+        "created_at": "2023-01-01T00:00:00Z",
+        "rating": 4.8,
+        "available": true,
+        "tags": [1, 2, 5]
+    }
+},
+{
+    "model": "shop.product",
+    "pk": 2,
+    "fields": {
+        "category": 1,
+        "title": "Samsung Galaxy S24",
+        "description": "Флагманский смартфон от Samsung",
+        "fullDescription": "Новейший смартфон с улучшенной камерой и производительностью",
+        "price": "899.99",
+        "count": 15,
+        "limited": false,
+        "freeDelivery": true,
+        "is_active": true,
+        "created_at": "2023-01-02T00:00:00Z",
+        "rating": 4.7,
+        "available": true,
+        "tags": [1, 2, 5]
+    }
+},
+{
+    "model": "shop.product",
+    "pk": 3,
+    "fields": {
+        "category": 2,
+        "title": "MacBook Pro 16\"",
+        "description": "Профессиональный ноутбук Apple",
+        "fullDescription": "Мощный ноутбук с чипом M3 и отличной графикой",
+        "price": "2499.99",
+        "count": 5,
+        "limited": false,
+        "freeDelivery": true,
+        "is_active": true,
+        "created_at": "2023-01-03T00:00:00Z",
+        "rating": 4.9,
+        "available": true,
+        "tags": [1, 2]
+    }
+},
+{
+    "model": "shop.product",
+    "pk": 4,
+    "fields": {
+        "category": 1,
+        "title": "Xiaomi Redmi Note 13",
+        "description": "Бюджетный смартфон с отличной камерой",
+        "fullDescription": "Смартфон с большим экраном и хорошей автономностью",
+        "price": "299.99",
+        "count": 20,
+        "limited": false,
+        "freeDelivery": false,
+        "is_active": true,
+        "created_at": "2023-01-04T00:00:00Z",
+        "rating": 4.3,
+        "available": true,
+        "tags": [3, 6]
+    }
+},
+{
+    "model": "shop.product",
+    "pk": 5,
+    "fields": {
+        "category": 2,
+        "title": "ASUS ROG Strix G16",
+        "description": "Игровой ноутбук для геймеров",
+        "fullDescription": "Мощный игровой ноутбук с видеокартой RTX 4060",
+        "price": "1599.99",
+        "count": 8,
+        "limited": false,
+        "freeDelivery": true,
+        "is_active": true,
+        "created_at": "2023-01-05T00:00:00Z",
+        "rating": 4.6,
+        "available": true,
+        "tags": [1]
+    }
+},
+{
+    "model": "shop.product",
+    "pk": 6,
+    "fields": {
+        "category": 3,
+        "title": "iPad Air 5",
+        "description": "Легкий и мощный планшет от Apple",
+        "fullDescription": "Планшет с чипом M1 и поддержкой Apple Pencil",
+        "price": "699.99",
+        "count": 12,
+        "limited": false,
+        "freeDelivery": true,
+        "is_active": true,
+        "created_at": "2023-01-06T00:00:00Z",
+        "rating": 4.7,
+        "available": true,
+        "tags": [2, 5]
+    }
+},
+{
+    "model": "shop.product",
+    "pk": 7,
+    "fields": {
+        "category": 4,
+        "title": "Sony WH-1000XM5",
+        "description": "Беспроводные наушники с шумоподавлением",
+        "fullDescription": "Флагманские наушники с лучшим в классе шумоподавлением",
+        "price": "349.99",
+        "count": 25,
+        "limited": false,
+        "freeDelivery": true,
+        "is_active": true,
+        "created_at": "2023-01-07T00:00:00Z",
+        "rating": 4.8,
+        "available": true,
+        "tags": [2, 4, 5]
+    }
+},
+{
+    "model": "shop.product",
+    "pk": 8,
+    "fields": {
+        "category": 4,
+        "title": "Apple AirPods Pro 2",
+        "description": "Беспроводные наушники с активным шумоподавлением",
+        "fullDescription": "Наушники с пространственным аудио и защитой от влаги",
+        "price": "249.99",
+        "count": 30,
+        "limited": false,
+        "freeDelivery": true,
+        "is_active": true,
+        "created_at": "2023-01-08T00:00:00Z",
+        "rating": 4.5,
+        "available": true,
+        "tags": [2, 4]
+    }
+},
+{
+    "model": "shop.product",
+    "pk": 9,
+    "fields": {
+        "category": 5,
+        "title": "Apple Watch Series 9",
+        "description": "Умные часы с функцией измерения кислорода в крови",
+        "fullDescription": "Смарт-часы с большим экраном и множеством функций здоровья",
+        "price": "399.99",
+        "count": 18,
+        "limited": true,
+        "freeDelivery": true,
+        "is_active": true,
+        "created_at": "2023-01-09T00:00:00Z",
+        "rating": 4.6,
+        "available": true,
+        "tags": [2, 5]
+    }
+},
+{
+    "model": "shop.product",
+    "pk": 10,
+    "fields": {
+        "category": 5,
+        "title": "Samsung Galaxy Watch 6",
+        "description": "Умные часы для мониторинга здоровья",
+        "fullDescription": "Смарт-часы с измерением ЭКГ и артериального давления",
+        "price": "329.99",
+        "count": 22,
+        "limited": false,
+        "freeDelivery": true,
+        "is_active": true,
+        "created_at": "2023-01-10T00:00:00Z",
+        "rating": 4.4,
+        "available": true,
+        "tags": [1, 4]
+    }
+},
+{
+    "model": "shop.productimage",
+    "pk": 1,
+    "fields": {
+        "product": 1,
+        "src": "products/iphone15pro.jpg",
+        "alt": "iPhone 15 Pro"
+    }
+},
+{
+    "model": "shop.productimage",
+    "pk": 2,
+    "fields": {
+        "product": 2,
+        "src": "products/galaxys24.jpg",
+        "alt": "Samsung Galaxy S24"
+    }
+},
+{
+    "model": "shop.productimage",
+    "pk": 3,
+    "fields": {
+        "product": 3,
+        "src": "products/macbookpro.jpg",
+        "alt": "MacBook Pro 16\""
+    }
+},
+{
+    "model": "shop.productimage",
+    "pk": 4,
+    "fields": {
+        "product": 4,
+        "src": "products/xiaomiredmi.jpg",
+        "alt": "Xiaomi Redmi Note 13"
+    }
+},
+{
+    "model": "shop.productimage",
+    "pk": 5,
+    "fields": {
+        "product": 5,
+        "src": "products/asusrog.jpg",
+        "alt": "ASUS ROG Strix G16"
+    }
+},
+{
+    "model": "shop.productimage",
+    "pk": 6,
+    "fields": {
+        "product": 6,
+        "src": "products/ipadair.jpg",
+        "alt": "iPad Air 5"
+    }
+},
+{
+    "model": "shop.productimage",
+    "pk": 7,
+    "fields": {
+        "product": 7,
+        "src": "products/sonyheadphones.jpg",
+        "alt": "Sony WH-1000XM5"
+    }
+},
+{
+    "model": "shop.productimage",
+    "pk": 8,
+    "fields": {
+        "product": 8,
+        "src": "products/airpodspro.jpg",
+        "alt": "Apple AirPods Pro 2"
+    }
+},
+{
+    "model": "shop.productimage",
+    "pk": 9,
+    "fields": {
+        "product": 9,
+        "src": "products/applewatch.jpg",
+        "alt": "Apple Watch Series 9"
+    }
+},
+{
+    "model": "shop.productimage",
+    "pk": 10,
+    "fields": {
+        "product": 10,
+        "src": "products/galaxywatch.jpg",
+        "alt": "Samsung Galaxy Watch 6"
+    }
+},
+{
+    "model": "shop.specification",
+    "pk": 1,
+    "fields": {
+        "product": 1,
+        "name": "Цвет",
+        "value": "Титановый"
+    }
+},
+{
+    "model": "shop.specification",
+    "pk": 2,
+    "fields": {
+        "product": 1,
+        "name": "Память",
+        "value": "256 ГБ"
+    }
+},
+{
+    "model": "shop.specification",
+    "pk": 3,
+    "fields": {
+        "product": 2,
+        "name": "Цвет",
+        "value": "Черный"
+    }
+},
+{
+    "model": "shop.specification",
+    "pk": 4,
+    "fields": {
+        "product": 2,
+        "name": "Память",
+        "value": "512 ГБ"
+    }
+},
+{
+    "model": "shop.specification",
+    "pk": 5,
+    "fields": {
+        "product": 3,
+        "name": "Процессор",
+        "value": "Apple M3"
+    }
+},
+{
+    "model": "shop.specification",
+    "pk": 6,
+    "fields": {
+        "product": 3,
+        "name": "Память",
+        "value": "16 ГБ"
+    }
+},
+{
+    "model": "shop.review",
+    "pk": 1,
+    "fields": {
+        "product": 1,
+        "author": "Иван Иванов",
+        "email": "ivan@example.com",
+        "text": "Отличный телефон! Очень доволен покупкой.",
+        "rate": 5,
+        "date": "2023-05-15T10:30:00Z"
+    }
+},
+{
+    "model": "shop.review",
+    "pk": 2,
+    "fields": {
+        "product": 1,
+        "author": "Мария Петрова",
+        "email": "maria@example.com",
+        "text": "Хороший телефон, но батарея могла бы быть лучше.",
+        "rate": 4,
+        "date": "2023-06-20T14:45:00Z"
+    }
+},
+{
+    "model": "shop.review",
+    "pk": 3,
+    "fields": {
+        "product": 2,
+        "author": "Алексей Сидоров",
+        "email": "alex@example.com",
+        "text": "Отличный флагман, камера просто супер!",
+        "rate": 5,
+        "date": "2023-07-10T09:15:00Z"
+    }
+},
+{
+    "model": "shop.review",
+    "pk": 4,
+    "fields": {
+        "product": 3,
+        "author": "user1",
+        "email": "ivan@example.com",
+        "text": "Мощный ноутбук для работы и творчества.",
+        "rate": 5,
+        "date": "2023-08-05T16:20:00Z"
+    }
+},
+{
+    "model": "shop.sale",
+    "pk": 1,
+    "fields": {
+        "product": 4,
+        "price": "349.99",
+        "salePrice": "299.99",
+        "dateFrom": "2023-11-01T00:00:00Z",
+        "dateTo": "2023-12-31T23:59:59Z",
+        "title": "Распродажа Xiaomi",
+        "images": []
+    }
+},
+{
+    "model": "shop.sale",
+    "pk": 2,
+    "fields": {
+        "product": 8,
+        "price": "299.99",
+        "salePrice": "249.99",
+        "dateFrom": "2023-11-15T00:00:00Z",
+        "dateTo": "2023-12-15T23:59:59Z",
+        "title": "Скидка на AirPods",
+        "images": []
+    }
+}
+]
