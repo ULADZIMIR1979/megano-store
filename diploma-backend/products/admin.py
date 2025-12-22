@@ -34,9 +34,12 @@ class TagAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'category', 'price', 'count', 'available', 'limited', 'freeDelivery', 'rating')
-    list_filter = ('category', 'available', 'limited', 'freeDelivery', 'created_at')
+    list_filter = ('category', 'available', 'limited', 'freeDelivery', 'created_at', 'tags')
     search_fields = ('title', 'description')
     prepopulated_fields = {'title': ('title',)}
+
+    filter_horizontal = ('tags',)
+
     inlines = [ProductImageInline, SpecificationInline, ReviewInline]
 
 

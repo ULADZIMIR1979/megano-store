@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('shop', '0001_initial'),
+        ('products', '0001_initial'),
         ('orders', '0001_initial'),
     ]
 
@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='cart',
             name='product',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='shop.product'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.product'),
         ),
         migrations.AddField(
             model_name='cart',

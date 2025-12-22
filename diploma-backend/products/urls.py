@@ -26,6 +26,4 @@ urlpatterns = [
     path('tags', views.TagListView.as_view(), name='tag-list_no_slash'),
     path('banners/', views.BannerListView.as_view(), name='banner-list'),
     path('banners', views.BannerListView.as_view(), name='banner-list_no_slash'),
-
-
 ]

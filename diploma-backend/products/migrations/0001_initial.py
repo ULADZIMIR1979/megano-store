@@ -18,11 +18,22 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=100, verbose_name='Название')),
                 ('image', models.ImageField(blank=True, null=True, upload_to='categories/', verbose_name='Изображение')),
-                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='shop.category', verbose_name='Родительская категория')),
+                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='products.category', verbose_name='Родительская категория')),
             ],
             options={
                 'verbose_name': 'Категория',
                 'verbose_name_plural': 'Категории',
+            },
+        ),
+        migrations.CreateModel(
+            name='Tag',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=50, verbose_name='Название тега')),
+            ],
+            options={
+                'verbose_name': 'Тег',
+                'verbose_name_plural': 'Теги',
             },
         ),
         migrations.CreateModel(
@@ -40,7 +51,8 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')),
                 ('rating', models.FloatField(default=0, verbose_name='Рейтинг')),
                 ('available', models.BooleanField(default=True, verbose_name='Доступен для покупки')),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='shop.category', verbose_name='Категория')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.category', verbose_name='Категория')),
+                ('tags', models.ManyToManyField(blank=True, to='products.tag', verbose_name='Теги')),
             ],
             options={
                 'verbose_name': 'Товар',
@@ -48,15 +60,13 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='Tag',
+            name='ProductImage',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, verbose_name='Название тега')),
+                ('src', models.ImageField(upload_to='products/')),
+                ('alt', models.CharField(blank=True, max_length=100)),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='products.product')),
             ],
-            options={
-                'verbose_name': 'Тег',
-                'verbose_name_plural': 'Теги',
-            },
         ),
         migrations.CreateModel(
             name='Specification',
@@ -64,11 +74,27 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100, verbose_name='Название')),
                 ('value', models.CharField(max_length=100, verbose_name='Значение')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='specifications', to='shop.product')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='specifications', to='products.product')),
             ],
             options={
                 'verbose_name': 'Характеристика',
                 'verbose_name_plural': 'Характеристики',
+            },
+        ),
+        migrations.CreateModel(
+            name='Review',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('author', models.CharField(max_length=100, verbose_name='Автор')),
+                ('email', models.EmailField(max_length=254, verbose_name='Email')),
+                ('text', models.TextField(verbose_name='Текст отзыва')),
+                ('rate', models.IntegerField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)], verbose_name='Оценка')),
+                ('date', models.DateTimeField(auto_now_add=True, verbose_name='Дата')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews', to='products.product')),
+            ],
+            options={
+                'verbose_name': 'Отзыв',
+                'verbose_name_plural': 'Отзывы',
             },
         ),
         migrations.CreateModel(
@@ -81,41 +107,11 @@ class Migration(migrations.Migration):
                 ('dateTo', models.DateTimeField(blank=True, null=True, verbose_name='Дата окончания скидки')),
                 ('title', models.CharField(blank=True, max_length=200, verbose_name='Название')),
                 ('images', models.JSONField(default=list, verbose_name='Изображения')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sales', to='shop.product', verbose_name='Товар')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sales', to='products.product', verbose_name='Товар')),
             ],
             options={
                 'verbose_name': 'Скидка',
                 'verbose_name_plural': 'Скидки',
             },
-        ),
-        migrations.CreateModel(
-            name='Review',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('author', models.CharField(max_length=100, verbose_name='Автор')),
-                ('email', models.EmailField(max_length=254, verbose_name='Email')),
-                ('text', models.TextField(verbose_name='Текст отзыва')),
-                ('rate', models.IntegerField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)], verbose_name='Оценка')),
-                ('date', models.DateTimeField(auto_now_add=True, verbose_name='Дата')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews', to='shop.product')),
-            ],
-            options={
-                'verbose_name': 'Отзыв',
-                'verbose_name_plural': 'Отзывы',
-            },
-        ),
-        migrations.CreateModel(
-            name='ProductImage',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('src', models.ImageField(upload_to='products/')),
-                ('alt', models.CharField(blank=True, max_length=100)),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='shop.product')),
-            ],
-        ),
-        migrations.AddField(
-            model_name='product',
-            name='tags',
-            field=models.ManyToManyField(blank=True, to='shop.tag', verbose_name='Теги'),
         ),
     ]

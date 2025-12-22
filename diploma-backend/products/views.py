@@ -30,8 +30,8 @@ class ProductListView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Product.objects.filter(is_active=True, available=True).prefetch_related(
-            'images', 'tags', 'reviews', 'specifications'
-        ).select_related('category')
+            'images', 'tags', 'specifications'
+        ).select_related('category').annotate(reviews_count=Count('reviews'))
 
         # Фильтрация
         name = self.request.query_params.get('filter[name]', None)
@@ -150,10 +150,12 @@ class ProductListView(generics.ListAPIView):
 
 class ProductDetailView(generics.RetrieveAPIView):
     """Детали продукта"""
-    queryset = Product.objects.filter(is_active=True)
+    queryset = Product.objects.filter(is_active=True).prefetch_related(
+        'images', 'tags', 'specifications'
+    ).select_related('category').annotate(reviews_count=Count('reviews'))
     serializer_class = ProductFullSerializer
     permission_classes = [AllowAny]
-    lookup_field = 'id'  # Указываем, что параметр URL называется 'id', а не 'pk'
+    lookup_field = 'id'
 
     def get_serializer_context(self):
         return {'request': self.request}
@@ -163,7 +165,7 @@ class ProductPopularView(generics.ListAPIView):
     """Список популярных продуктов (по рейтингу)"""
     serializer_class = ProductShortSerializer
     permission_classes = [AllowAny]
-    queryset = Product.objects.filter(is_active=True, available=True).order_by('-rating')[:8]
+    queryset = Product.objects.filter(is_active=True, available=True).select_related('category').prefetch_related('images', 'tags').annotate(reviews_count=Count('reviews')).order_by('-rating')[:8]
 
     def get_serializer_context(self):
         return {'request': self.request}
@@ -173,7 +175,7 @@ class ProductLimitedView(generics.ListAPIView):
     """Список продуктов ограниченного тиража"""
     serializer_class = ProductShortSerializer
     permission_classes = [AllowAny]
-    queryset = Product.objects.filter(is_active=True, available=True, limited=True)[:16]
+    queryset = Product.objects.filter(is_active=True, available=True, limited=True).select_related('category').prefetch_related('images', 'tags').annotate(reviews_count=Count('reviews'))[:16]
 
     def get_serializer_context(self):
         return {'request': self.request}
@@ -200,7 +202,7 @@ class ProductReviewView(APIView):
             # Сохраняем отзыв
             review = serializer.save(product=product)
             # Возвращаем все отзывы для этого продукта, как указано в swagger
-            all_reviews = Review.objects.filter(product=product)
+            all_reviews = Review.objects.filter(product=product).only('author', 'email', 'text', 'rate', 'date', 'product_id')
             reviews_serializer = ReviewSerializer(all_reviews, many=True)
             return Response(reviews_serializer.data)
         else:
@@ -216,7 +218,7 @@ class SaleListView(APIView):
         queryset = Sale.objects.filter(
             dateFrom__lte=current_date,
             dateTo__gte=current_date
-        ).prefetch_related('product__images')
+        ).prefetch_related('product__images').select_related('product')
 
         page = int(request.query_params.get('currentPage', 1))
         limit = 20
@@ -241,7 +243,7 @@ class SaleListView(APIView):
 
 class CategoryListView(generics.ListAPIView):
     """Список категорий"""
-    queryset = Category.objects.filter(parent=None)
+    queryset = Category.objects.filter(parent=None).only('id', 'title', 'image', 'parent')
     serializer_class = CategorySerializer
     permission_classes = [AllowAny]
 
@@ -259,18 +261,18 @@ class TagListView(generics.ListAPIView):
         if category_id and category_id != 'NaN':
             try:
                 category_id_int = int(category_id)
-                return Tag.objects.filter(product__category_id=category_id_int).distinct()
+                return Tag.objects.filter(product__category_id=category_id_int).distinct().only('id', 'name')
             except (ValueError, TypeError):
                 # Если не удается преобразовать в число, возвращаем все теги
-                return Tag.objects.all()
-        return Tag.objects.all()
+                return Tag.objects.all().only('id', 'name')
+        return Tag.objects.all().only('id', 'name')
 
 
 class BannerListView(generics.ListAPIView):
     """Список товаров для баннера (топ 10 по рейтингу)"""
     serializer_class = ProductShortSerializer
     permission_classes = [AllowAny]
-    queryset = Product.objects.filter(is_active=True, available=True).order_by('-rating')[:10]
+    queryset = Product.objects.filter(is_active=True, available=True).select_related('category').prefetch_related('images', 'tags').annotate(reviews_count=Count('reviews')).order_by('-rating')[:10]
 
     def get_serializer_context(self):
         return {'request': self.request}

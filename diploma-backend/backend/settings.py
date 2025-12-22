@@ -21,10 +21,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'drf_yasg',
-    'shop',
+    'products',
     'orders',
     'users',
     'frontend',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
@@ -94,7 +95,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '..', 'diploma-frontend', 'frontend', 'static'),
+    os.path.join(BASE_DIR, '..', 'diploma-frontend ', 'frontend', 'static'),
 ]
 
 # Media files
@@ -113,7 +114,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        'rest_framework.permissions.IsAuthenticated',
     ]
 }
 

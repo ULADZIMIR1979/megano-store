@@ -4,6 +4,12 @@ from django.core.files.storage import default_storage
 import os
 
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'name']
+
+
 class CategorySerializer(serializers.ModelSerializer):
     subcategories = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
@@ -13,15 +19,17 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'image', 'subcategories']
 
     def get_subcategories(self, obj):
-        subcategories = Category.objects.filter(parent=obj)
+        subcategories = Category.objects.filter(parent=obj).only('id', 'title', 'parent')
         return CategorySerializer(subcategories, many=True).data
 
     def get_image(self, obj):
-        if obj.image:
+        # Используем только нужное поле image, если оно есть
+        image_url = obj.image.url if obj.image else None
+        if image_url:
             request = self.context.get('request')
             if request:
-                return request.build_absolute_uri(obj.image.url)
-            return obj.image.url
+                return request.build_absolute_uri(image_url)
+            return image_url
         return '/static/frontend/assets/img/product.png'
 
 
@@ -33,20 +41,18 @@ class ProductImageSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         request = self.context.get('request')
-        if instance.src:
+        # Используем значение из сериализованных данных, чтобы избежать дополнительного обращения к файловой системе
+        src_value = representation.get('src')
+        if src_value:
             if request:
-                representation['src'] = request.build_absolute_uri(instance.src.url)
+                representation['src'] = request.build_absolute_uri(src_value)
             else:
-                representation['src'] = instance.src.url
+                representation['src'] = src_value
         else:
             representation['src'] = '/static/frontend/assets/img/product.png'
         return representation
 
 
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ['id', 'name']
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -76,7 +82,8 @@ class ProductShortSerializer(serializers.ModelSerializer):
         ]
 
     def get_reviews(self, obj):
-        return obj.reviews.count()
+        # Используем аннотацию из queryset для получения количества отзывов, чтобы избежать дополнительного запроса
+        return getattr(obj, 'reviews_count', obj.reviews.count())
 
     def get_price(self, obj):
         return float(obj.price)
@@ -98,7 +105,7 @@ class ProductShortSerializer(serializers.ModelSerializer):
 # Сериализатор для детальной страницы товара
 class ProductFullSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
-    tags = serializers.SerializerMethodField()
+    tags = TagSerializer(many=True, read_only=True)
     reviews = ReviewSerializer(many=True, read_only=True)
     specifications = serializers.SerializerMethodField()
     rating = serializers.FloatField()
@@ -113,13 +120,8 @@ class ProductFullSerializer(serializers.ModelSerializer):
             'specifications', 'rating', 'limited', 'available'
         ]
 
-    def get_tags(self, obj):
-        tags = obj.tags.all()
-        # Возвращаем теги в формате, соответствующем спецификации swagger
-        return [tag.id for tag in tags]
-
     def get_specifications(self, obj):
-        specs = obj.specifications.all()
+        specs = obj.specifications.only('name', 'value')
         return [{'name': spec.name, 'value': spec.value} for spec in specs]
 
     def get_salePrice(self, obj):
@@ -184,7 +186,7 @@ class SaleSerializer(serializers.ModelSerializer):
         if obj.images:
             return obj.images
         else:
-            product_images = obj.product.images.all()
+            product_images = obj.product.images.only('src', 'alt')
             if product_images.exists():
                 image_urls = []
                 request = self.context.get('request')

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Order, OrderProduct, Cart, Payment
-from shop.models import Product
-from shop.serializers import ProductShortSerializer
+from products.models import Product
+from products.serializers import ProductShortSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -58,15 +58,35 @@ class OrderProductSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     """Сериализатор для заказа"""
 
-    products = OrderProductSerializer(source='products', many=True, read_only=True)
+    # ИСПРАВЛЕНО: убран source='products'
+    products = OrderProductSerializer(many=True, read_only=True)
+
+    # Опционально: добавить отображаемые значения
+    deliveryType_display = serializers.CharField(
+        source='get_deliveryType_display',
+        read_only=True
+    )
+    paymentType_display = serializers.CharField(
+        source='get_paymentType_display',
+        read_only=True
+    )
+    status_display = serializers.CharField(
+        source='get_status_display',
+        read_only=True
+    )
 
     class Meta:
         model = Order
         fields = [
             'id', 'createdAt', 'fullName', 'email', 'phone',
-            'deliveryType', 'city', 'address', 'paymentType',
-            'status', 'totalCost', 'products', 'comment'
+            'deliveryType', 'deliveryType_display', 'city', 'address',
+            'paymentType', 'paymentType_display', 'status', 'status_display',
+            'totalCost', 'products', 'comment'
         ]
+        read_only_fields = ['id', 'createdAt', 'status', 'totalCost']
+
+
+# ... остальной код сериализаторов остается без изменений
 
 
 class BasketItemSerializer(serializers.Serializer):

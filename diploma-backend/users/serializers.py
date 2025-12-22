@@ -34,27 +34,68 @@ class UserSerializer(serializers.ModelSerializer):
         return representation
 
 
+# class UserRegistrationSerializer(serializers.ModelSerializer):
+#     password = serializers.CharField(write_only=True, validators=[validate_password])
+#     password_confirm = serializers.CharField(write_only=True)
+#
+#     class Meta:
+#         model = User
+#         fields = ['fullName', 'email', 'phone', 'password', 'password_confirm']
+#
+#     def validate(self, attrs):
+#         if attrs['password'] != attrs['password_confirm']:
+#             raise serializers.ValidationError({"password_confirm": "Пароли не совпадают"})
+#         return attrs
+#
+#     def create(self, validated_data):
+#         validated_data.pop('password_confirm')
+#         user = User.objects.create_user(
+#             username=validated_data['email'],  # используем email как username
+#             email=validated_data['email'],
+#             fullName=validated_data.get('fullName', ''),
+#             phone=validated_data.get('phone', ''),
+#             password=validated_data['password']
+#         )
+#         return user
+
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, validators=[validate_password])
-    password_confirm = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True, validators=[validate_password], required=True)
+    password_confirm = serializers.CharField(write_only=True, required=False)  # Сделать необязательным
+    username = serializers.CharField(write_only=True, required=True)
+    name = serializers.CharField(write_only=True, required=False, allow_blank=True, default='')
 
     class Meta:
         model = User
-        fields = ['fullName', 'email', 'phone', 'password', 'password_confirm']
+        fields = ['name', 'username', 'password', 'password_confirm']
 
     def validate(self, attrs):
-        if attrs['password'] != attrs['password_confirm']:
-            raise serializers.ValidationError({"password_confirm": "Пароли не совпадают"})
+        # Используем username как email
+        attrs['email'] = attrs['username']
+
+        # Проверяем уникальность username/email
+        if User.objects.filter(username=attrs['username']).exists():
+            raise serializers.ValidationError({"username": "Пользователь с таким именем уже существует"})
+
+        if User.objects.filter(email=attrs['email']).exists():
+            raise serializers.ValidationError({"username": "Пользователь с таким email уже существует"})
+
         return attrs
 
     def create(self, validated_data):
-        validated_data.pop('password_confirm')
+        # Извлекаем дополнительные поля
+        name = validated_data.pop('name', '')
+        username = validated_data.pop('username')
+        email = validated_data.pop('email')
+        password = validated_data.pop('password')
+        validated_data.pop('password_confirm', None)
+
         user = User.objects.create_user(
-            username=validated_data['email'],  # используем email как username
-            email=validated_data['email'],
-            fullName=validated_data.get('fullName', ''),
-            phone=validated_data.get('phone', ''),
-            password=validated_data['password']
+            username=username,
+            email=email,
+            fullName=name,
+            phone='',  # Пустое по умолчанию
+            password=password
         )
         return user
 

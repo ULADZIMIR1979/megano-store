@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('shop', '0001_initial'),
+        ('products', '0001_initial'),
     ]
 
     operations = [
@@ -67,7 +67,7 @@ class Migration(migrations.Migration):
                 ('count', models.IntegerField(default=1)),
                 ('price', models.DecimalField(decimal_places=2, max_digits=10)),
                 ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='products', to='orders.order')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='shop.product')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.product')),
             ],
         ),
     ]

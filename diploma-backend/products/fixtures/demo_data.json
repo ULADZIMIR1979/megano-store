@@ -1,6 +1,6 @@
 [
 {
-    "model": "shop.category",
+    "model": "products.category",
     "pk": 1,
     "fields": {
         "title": "Смартфоны",
@@ -9,7 +9,7 @@
     }
 },
 {
-    "model": "shop.category",
+    "model": "products.category",
     "pk": 2,
     "fields": {
         "title": "Ноутбуки",
@@ -18,7 +18,7 @@
     }
 },
 {
-    "model": "shop.category",
+    "model": "products.category",
     "pk": 3,
     "fields": {
         "title": "Планшеты",
@@ -27,7 +27,7 @@
     }
 },
 {
-    "model": "shop.category",
+    "model": "products.category",
     "pk": 4,
     "fields": {
         "title": "Наушники",
@@ -36,7 +36,7 @@
     }
 },
 {
-    "model": "shop.category",
+    "model": "products.category",
     "pk": 5,
     "fields": {
         "title": "Часы",
@@ -45,42 +45,42 @@
     }
 },
 {
-    "model": "shop.tag",
+    "model": "products.tag",
     "pk": 1,
     "fields": {
         "name": "Gaming"
     }
 },
 {
-    "model": "shop.tag",
+    "model": "products.tag",
     "pk": 2,
     "fields": {
         "name": "Premium"
     }
 },
 {
-    "model": "shop.tag",
+    "model": "products.tag",
     "pk": 3,
     "fields": {
         "name": "Budget"
     }
 },
 {
-    "model": "shop.tag",
+    "model": "products.tag",
     "pk": 4,
     "fields": {
         "name": "Wireless"
     }
 },
 {
-    "model": "shop.tag",
+    "model": "products.tag",
     "pk": 5,
     "fields": {
         "name": "New"
     }
 },
 {
-    "model": "shop.tag",
+    "model": "products.tag",
     "pk": 6,
     "fields": {
         "name": "Sale"
@@ -144,7 +144,7 @@
     }
 },
 {
-    "model": "shop.product",
+    "model": "products.product",
     "pk": 1,
     "fields": {
         "category": 1,
@@ -163,7 +163,7 @@
     }
 },
 {
-    "model": "shop.product",
+    "model": "products.product",
     "pk": 2,
     "fields": {
         "category": 1,
@@ -182,7 +182,7 @@
     }
 },
 {
-    "model": "shop.product",
+    "model": "products.product",
     "pk": 3,
     "fields": {
         "category": 2,
@@ -201,7 +201,7 @@
     }
 },
 {
-    "model": "shop.product",
+    "model": "products.product",
     "pk": 4,
     "fields": {
         "category": 1,
@@ -220,7 +220,7 @@
     }
 },
 {
-    "model": "shop.product",
+    "model": "products.product",
     "pk": 5,
     "fields": {
         "category": 2,
@@ -239,7 +239,7 @@
     }
 },
 {
-    "model": "shop.product",
+    "model": "products.product",
     "pk": 6,
     "fields": {
         "category": 3,
@@ -258,7 +258,7 @@
     }
 },
 {
-    "model": "shop.product",
+    "model": "products.product",
     "pk": 7,
     "fields": {
         "category": 4,
@@ -277,7 +277,7 @@
     }
 },
 {
-    "model": "shop.product",
+    "model": "products.product",
     "pk": 8,
     "fields": {
         "category": 4,
@@ -296,7 +296,7 @@
     }
 },
 {
-    "model": "shop.product",
+    "model": "products.product",
     "pk": 9,
     "fields": {
         "category": 5,
@@ -315,7 +315,7 @@
     }
 },
 {
-    "model": "shop.product",
+    "model": "products.product",
     "pk": 10,
     "fields": {
         "category": 5,
@@ -334,7 +334,7 @@
     }
 },
 {
-    "model": "shop.productimage",
+    "model": "products.productimage",
     "pk": 1,
     "fields": {
         "product": 1,
@@ -343,7 +343,7 @@
     }
 },
 {
-    "model": "shop.productimage",
+    "model": "products.productimage",
     "pk": 2,
     "fields": {
         "product": 2,
@@ -352,7 +352,7 @@
     }
 },
 {
-    "model": "shop.productimage",
+    "model": "products.productimage",
     "pk": 3,
     "fields": {
         "product": 3,
@@ -361,7 +361,7 @@
     }
 },
 {
-    "model": "shop.productimage",
+    "model": "products.productimage",
     "pk": 4,
     "fields": {
         "product": 4,
@@ -370,7 +370,7 @@
     }
 },
 {
-    "model": "shop.productimage",
+    "model": "products.productimage",
     "pk": 5,
     "fields": {
         "product": 5,
@@ -379,7 +379,7 @@
     }
 },
 {
-    "model": "shop.productimage",
+    "model": "products.productimage",
     "pk": 6,
     "fields": {
         "product": 6,
@@ -388,7 +388,7 @@
     }
 },
 {
-    "model": "shop.productimage",
+    "model": "products.productimage",
     "pk": 7,
     "fields": {
         "product": 7,
@@ -397,7 +397,7 @@
     }
 },
 {
-    "model": "shop.productimage",
+    "model": "products.productimage",
     "pk": 8,
     "fields": {
         "product": 8,
@@ -406,7 +406,7 @@
     }
 },
 {
-    "model": "shop.productimage",
+    "model": "products.productimage",
     "pk": 9,
     "fields": {
         "product": 9,
@@ -415,7 +415,7 @@
     }
 },
 {
-    "model": "shop.productimage",
+    "model": "products.productimage",
     "pk": 10,
     "fields": {
         "product": 10,
@@ -424,7 +424,7 @@
     }
 },
 {
-    "model": "shop.specification",
+    "model": "products.specification",
     "pk": 1,
     "fields": {
         "product": 1,
@@ -433,7 +433,7 @@
     }
 },
 {
-    "model": "shop.specification",
+    "model": "products.specification",
     "pk": 2,
     "fields": {
         "product": 1,
@@ -442,7 +442,7 @@
     }
 },
 {
-    "model": "shop.specification",
+    "model": "products.specification",
     "pk": 3,
     "fields": {
         "product": 2,
@@ -451,7 +451,7 @@
     }
 },
 {
-    "model": "shop.specification",
+    "model": "products.specification",
     "pk": 4,
     "fields": {
         "product": 2,
@@ -460,7 +460,7 @@
     }
 },
 {
-    "model": "shop.specification",
+    "model": "products.specification",
     "pk": 5,
     "fields": {
         "product": 3,
@@ -469,7 +469,7 @@
     }
 },
 {
-    "model": "shop.specification",
+    "model": "products.specification",
     "pk": 6,
     "fields": {
         "product": 3,
@@ -478,7 +478,7 @@
     }
 },
 {
-    "model": "shop.review",
+    "model": "products.review",
     "pk": 1,
     "fields": {
         "product": 1,
@@ -490,7 +490,7 @@
     }
 },
 {
-    "model": "shop.review",
+    "model": "products.review",
     "pk": 2,
     "fields": {
         "product": 1,
@@ -502,7 +502,7 @@
     }
 },
 {
-    "model": "shop.review",
+    "model": "products.review",
     "pk": 3,
     "fields": {
         "product": 2,
@@ -514,7 +514,7 @@
     }
 },
 {
-    "model": "shop.review",
+    "model": "products.review",
     "pk": 4,
     "fields": {
         "product": 3,
@@ -526,7 +526,7 @@
     }
 },
 {
-    "model": "shop.sale",
+    "model": "products.sale",
     "pk": 1,
     "fields": {
         "product": 4,
@@ -539,7 +539,7 @@
     }
 },
 {
-    "model": "shop.sale",
+    "model": "products.sale",
     "pk": 2,
     "fields": {
         "product": 8,

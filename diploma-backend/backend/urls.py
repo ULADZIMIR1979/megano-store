@@ -6,8 +6,11 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from orders.views import create_order_from_cart, order_detail_page
-from shop.views import order_page
+from products.views import order_page
 from .views import get_csrf_token
+from django.urls import path
+from .views import DebugSignInView
+
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -25,10 +28,10 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # 1. API маршруты
-    path('api/', include('shop.urls')),  # shop API
-    path('api/', include('users.urls')),  # users API
-    path('api/', include('orders.urls')),  # orders API - ЭТО ВАЖНО ДЛЯ order/<int:id>/
+    path('api/', include('users.urls')),
+    path('api/', include('products.urls')),
+    path('api/', include('orders.urls')),
+    path('api/debug-sign-in/', DebugSignInView.as_view(), name='debug_sign_in'),
 
     path('api/csrf/', get_csrf_token, name='csrf'),
 

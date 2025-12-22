@@ -8,7 +8,7 @@ class Category(models.Model):
     image = models.ImageField(upload_to='categories/', blank=True, null=True, verbose_name='Изображение')
 
     class Meta:
-        app_label = 'shop'
+        app_label = 'products'
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
@@ -51,7 +51,7 @@ class Product(models.Model):
 
     def get_subcategories(self):
         """Возвращает подкатегории для данной категории"""
-        return Category.objects.filter(parent=self)
+        return Category.objects.filter(parent=self).only('id', 'title', 'parent')
 
 
 class ProductImage(models.Model):
@@ -104,7 +104,7 @@ class Sale(models.Model):
     class Meta:
         verbose_name = 'Скидка'
         verbose_name_plural = 'Скидки'
-        app_label = 'shop'
+        app_label = 'products'
 
     def __str__(self):
         return f"Скидка на {self.product.title}"

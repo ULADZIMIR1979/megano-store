@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
-from shop.models import Product
+from products.models import Product
 import json
 
 User = get_user_model()
@@ -25,6 +25,21 @@ def create_product_data(product, count, price=None):
     if price is None:
         price = product.price
 
+    # Используем предзагруженные связанные объекты, если они доступны
+    try:
+        # Проверяем, были ли предзагружены изображения
+        images = product.images.all()
+    except AttributeError:
+        # Если нет, загружаем их
+        images = product.images.all()
+
+    try:
+        # Проверяем, были ли предзагружены теги
+        tags = product.tags.all()
+    except AttributeError:
+        # Если нет, загружаем их
+        tags = product.tags.all()
+
     return {
         'id': product.id,
         'category': product.category.id,
@@ -39,9 +54,9 @@ def create_product_data(product, count, price=None):
                 'src': f'/media/{img.src}' if img.src else '/static/frontend/assets/img/product.png',
                 'alt': img.alt
             }
-            for img in product.images.all()
+            for img in images
         ],
-        'tags': [tag.id for tag in product.tags.all()],
+        'tags': [tag.id for tag in tags],
         'reviews': product.reviews.count(),
         'rating': float(product.rating)
     }
@@ -126,7 +141,9 @@ def get_basket_items_for_user(request):
     if request.user.is_authenticated:
         try:
             basket_order = Order.objects.get(user=request.user, status='accepted')
-            order_products = OrderProduct.objects.filter(order=basket_order).select_related('product')
+            order_products = OrderProduct.objects.filter(order=basket_order).select_related('product').prefetch_related(
+                'product__images', 'product__tags'
+            )
 
             basket_items = []
             for op in order_products:
@@ -396,7 +413,9 @@ class OrderDetailView(APIView):
     def _get_products_data(self, order):
         """Получить данные товаров заказа"""
 
-        order_products = order.products.all()
+        order_products = order.products.select_related('product').prefetch_related(
+            'product__images'
+        ).all()
 
         products_data = []
 
@@ -648,7 +667,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 from .models import Order, OrderProduct, Cart, Payment
-from shop.models import Product
+from products.models import Product
 from .serializers import OrderSerializer, PaymentSerializer
 import json
 
@@ -771,7 +790,11 @@ def get_basket_items_for_user(request):
     if request.user.is_authenticated:
         try:
             basket_order = Order.objects.get(user=request.user, status='accepted')
-            order_products = OrderProduct.objects.filter(order=basket_order).select_related('product')
+            order_products = OrderProduct.objects.filter(
+                order=basket_order
+            ).select_related('product').prefetch_related(
+                'product__images', 'product__tags', 'product__category'
+            )
 
             basket_items = []
             for op in order_products:
@@ -786,7 +809,9 @@ def get_basket_items_for_user(request):
 
         for item in basket:
             try:
-                product = Product.objects.get(id=item['id'])
+                product = Product.objects.prefetch_related(
+                    'images', 'tags', 'category'
+                ).get(id=item['id'])
                 basket_items.append(create_product_data(product, item['count']))
             except Product.DoesNotExist:
                 continue
@@ -1080,7 +1105,10 @@ class BasketView(APIView):
     def post(self, request):
         product_id = request.data.get('id')
         count = int(request.data.get('count', 1))
-        product = get_object_or_404(Product, id=product_id)
+        product = get_object_or_404(
+            Product.objects.prefetch_related('images', 'tags', 'category'),
+            id=product_id
+        )
 
         if request.user.is_authenticated:
             basket_order, created = Order.objects.get_or_create(
