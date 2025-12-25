@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404, render, redirect
 from django.db.models import Count
 from django.core.paginator import Paginator
+from django.views.generic import TemplateView
 from .models import Product, Category, Tag, Review, Sale
 from .serializers import (
     ProductShortSerializer, ProductFullSerializer,
@@ -372,5 +373,12 @@ def order_page(request):
             print(f"Error creating draft order: {e}")
             # Если не получилось, показываем пустую форму
             return render(request, 'frontend/order.html')
+            # Если не получилось, показываем пустую форму
+            return render(request, 'frontend/order.html')
 
     return redirect('/cart/')
+
+
+def product_page(request, id):
+    """Страница продукта - отображение HTML шаблона"""
+    return render(request, 'frontend/product.html')

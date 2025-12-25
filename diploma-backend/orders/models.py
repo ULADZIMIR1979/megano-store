@@ -52,15 +52,31 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.id} by {self.fullName}"
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['createdAt']),
+            models.Index(fields=['status']),
+            models.Index(fields=['user']),
+            models.Index(fields=['-createdAt']),  # Для сортировки по дате создания (новые первыми)
+            models.Index(fields=['status', 'createdAt']),  # Комбинированный индекс для фильтрации по статусу и сортировки по дате
+        ]
+
 
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='products')
-    product = models.ForeignKey('shop.Product', on_delete=models.CASCADE)
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     count = models.IntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return f"{self.product.title} x{self.count}"
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['order']),
+            models.Index(fields=['product']),
+            models.Index(fields=['order', 'product']),  # Комбинированный индекс для быстрого доступа к товарам в заказе
+        ]
 
 
 class Payment(models.Model):
@@ -76,6 +92,11 @@ class Payment(models.Model):
     class Meta:
         verbose_name = 'Платеж'
         verbose_name_plural = 'Платежи'
+        indexes = [
+            models.Index(fields=['order']),
+            models.Index(fields=['status']),
+            models.Index(fields=['created_at']),
+        ]
 
     def __str__(self):
         return f"Payment for order {self.order.id}"
@@ -83,7 +104,7 @@ class Payment(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey('users.User', on_delete=models.CASCADE, null=True, blank=True)
-    product = models.ForeignKey('shop.Product', on_delete=models.CASCADE)
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     count = models.IntegerField(default=1)
     added_at = models.DateTimeField(auto_now_add=True)
 
@@ -91,6 +112,11 @@ class Cart(models.Model):
         verbose_name = 'Корзина'
         verbose_name_plural = 'Корзины'
         app_label = 'orders'
+        indexes = [
+            models.Index(fields=['user']),
+            models.Index(fields=['product']),
+            models.Index(fields=['user', 'product']),  # Комбинированный индекс для быстрого доступа к товарам в корзине пользователя
+        ]
 
     def __str__(self):
         return f"Cart item: {self.product.title} x{self.count}"

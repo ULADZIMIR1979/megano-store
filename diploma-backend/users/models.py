@@ -10,3 +10,9 @@ class User(AbstractUser):
     class Meta:
         db_table = 'auth_user'
         app_label = 'users'
+        indexes = [
+            models.Index(fields=['username']),
+            models.Index(fields=['email']),
+            models.Index(fields=['fullName']),
+            models.Index(fields=['phone']),
+        ]

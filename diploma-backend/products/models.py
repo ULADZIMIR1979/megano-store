@@ -11,6 +11,10 @@ class Category(models.Model):
         app_label = 'products'
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
+        indexes = [
+            models.Index(fields=['parent']),
+            models.Index(fields=['title']),
+        ]
 
     def __str__(self):
         return self.title
@@ -45,6 +49,16 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
+        indexes = [
+            models.Index(fields=['category']),
+            models.Index(fields=['price']),
+            models.Index(fields=['rating']),
+            models.Index(fields=['available']),
+            models.Index(fields=['created_at']),
+            models.Index(fields=['-rating']),  # Для сортировки по рейтингу (лучшие первыми)
+            models.Index(fields=['category', 'price']),  # Комбинированный индекс для фильтрации по категории и цене
+            models.Index(fields=['available', 'category']),  # Комбинированный индекс для фильтрации по доступности и категории
+        ]
 
     def __str__(self):
         return self.title
@@ -62,6 +76,11 @@ class ProductImage(models.Model):
     def __str__(self):
         return f"Image for {self.product.title}"
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['product']),
+        ]
+
 
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
@@ -74,6 +93,13 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
+        indexes = [
+            models.Index(fields=['product']),
+            models.Index(fields=['date']),
+            models.Index(fields=['rate']),
+            models.Index(fields=['-date']),  # Для сортировки по дате (новые первыми)
+            models.Index(fields=['product', 'date']),  # Комбинированный индекс для получения отзывов по продукту с сортировкой по дате
+        ]
 
     def __str__(self):
         return f"Review by {self.author} for {self.product.title}"
@@ -87,6 +113,10 @@ class Specification(models.Model):
     class Meta:
         verbose_name = 'Характеристика'
         verbose_name_plural = 'Характеристики'
+        indexes = [
+            models.Index(fields=['product']),
+            models.Index(fields=['name']),
+        ]
 
     def __str__(self):
         return f"{self.name}: {self.value}"
@@ -105,6 +135,12 @@ class Sale(models.Model):
         verbose_name = 'Скидка'
         verbose_name_plural = 'Скидки'
         app_label = 'products'
+        indexes = [
+            models.Index(fields=['product']),
+            models.Index(fields=['dateFrom']),
+            models.Index(fields=['dateTo']),
+            models.Index(fields=['-salePrice']),  # Для сортировки по скидке (лучшие предложения первыми)
+        ]
 
     def __str__(self):
         return f"Скидка на {self.product.title}"
