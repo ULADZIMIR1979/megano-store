@@ -31,7 +31,7 @@
 
 4. Выполните миграции:
    ```
-   python manage.py migrate
+   python3 manage.py migrate
    ```
 
 5. Загрузите фикстуры:
@@ -43,7 +43,7 @@
 
 6. Запустите сервер:
    ```
-   python manage.py runserver
+   python3 manage.py runserver
    ```
 
 ## Структура проекта
